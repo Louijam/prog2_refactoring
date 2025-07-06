@@ -2,29 +2,21 @@ package refactoring;
 
 public class Mountainbike extends Bike {
 
-    public int maxSpeed;
-    public int rearGearsCount;
-    public int frontGearsCount;
-
-    public Mountainbike(String pn, double p, int ms, int rgc, int fgc) {
-        productName = pn;
-        price = p;
-        maxSpeed = ms;
-        rearGearsCount = rgc;
-        frontGearsCount = fgc;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
+    public Mountainbike(String productName, double price, int maxSpeed, int rearGearCount, int frontGearCount) {
+        super(productName, price, maxSpeed, rearGearCount, frontGearCount);
     }
 
     @Override
-    public Integer getBatteryCapacity() {
-        return null;
-    }
+    public double calculatePrice(int amount){
+        double total=0;
 
-    @Override
-    public int getGearsCount() {
-        return rearGearsCount * frontGearsCount;
+        if (amount > 2){
+            total+=amount * getPrice() * 0.9;
+        } else {
+            total+=amount * getPrice();
+        }
+
+       return applyBulkDiscount(total);
     }
 }
+

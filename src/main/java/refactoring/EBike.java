@@ -1,26 +1,30 @@
 package refactoring;
 
 public class EBike extends Bike {
+    private final int batteryCapacity;
 
-    public int maxSpeed;
-    public int rearGearsCount;
-    public int frontGearsCount;
-
-    public EBike(String pn, double p, int ms, int rgc, int fgc, int bc) {
-        productName = pn;
-        price = p;
-        maxSpeed = ms;
-        rearGearsCount = rgc;
-        frontGearsCount = fgc;
-        batteryCapacity = bc;
+    public EBike(String productName, double price, int maxSpeed, int rearGearCount, int frontGearCount, int batteryCapacity) {
+        super(productName, price, maxSpeed, rearGearCount, frontGearCount);
+        if (batteryCapacity<0) {
+            throw new IllegalArgumentException("Battery Capacity should be greater than 0");
+        }
+        this.batteryCapacity = batteryCapacity;
     }
 
-    public int getMaxSpeed() {
-        return maxSpeed;
+    public int getBatteryCapacity(){ return batteryCapacity; }
+
+
+
+    @Override
+    public double calculatePrice(int amount){
+        double total=getPrice()*amount;
+
+        return applyBulkDiscount(total);
     }
 
     @Override
-    public int getGearsCount() {
-        return rearGearsCount * frontGearsCount;
+    public String toString() {
+        return super.toString() + String.format(" [Battery: %dWh]", batteryCapacity);
     }
 }
+

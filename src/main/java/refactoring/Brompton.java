@@ -2,29 +2,17 @@ package refactoring;
 
 public class Brompton extends Bike {
 
-    public int maxSpeed;
-    public int rearGearsCount;
-    public int frontGearsCount;
-
-    public Brompton(String pn, double p, int ms, int rgc, int fgc) {
-        productName = pn;
-        price = p;
-        maxSpeed = ms;
-        rearGearsCount = rgc;
-        frontGearsCount = fgc;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
+    public Brompton(String productName, double price, int maxSpeed, int rearGearCount, int frontGearCount) {
+        super(productName, price, maxSpeed, rearGearCount, frontGearCount);
     }
 
     @Override
-    public Integer getBatteryCapacity() {
-        return null;
-    }
+    public double calculatePrice(int amount){
+        double pricePerUnit=getPrice();
+        int discountAmount = Math.max(0, amount-1);
 
-    @Override
-    public int getGearsCount() {
-        return rearGearsCount * frontGearsCount;
+        double total=pricePerUnit+ (discountAmount*pricePerUnit/2);
+
+        return applyBulkDiscount(total);
     }
 }

@@ -1,29 +1,31 @@
 package refactoring;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Bill {
 
-    public String customerName;
-    public String nickname;
-    public Date birthday;
-    public String email;
-    public String street;
-    public String streetNumber;
-    public int postalCode;
-    public String city;
-    public ArrayList<Article> articles;
+    private final String customerName;
+    private final String nickname;
+    private final String street;
+    private final String streetNumber;
+    private final int postalCode;
+    private final String city;
+    private final Date birthday;
+    private final String email;
+    private final ArrayList<Article> articles;
 
-    public Bill(String cn, String n, String s, String sn, int pc, Date b, String e, String c) {
-        customerName = cn;
-        nickname = n;
-        street = s;
-        streetNumber = sn;
-        postalCode = pc;
-        birthday = b;
-        email = e;
-        city = c;
+
+    public Bill(String name, String nickname, String street, String streetNumber, int postalCode, Date birthday, String email, String city) {
+        this.customerName = name;
+        this.nickname = nickname;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.birthday = birthday;
+        this.email = email;
+        this.city = city;
         articles = new ArrayList<>();
     }
 
@@ -31,48 +33,76 @@ public class Bill {
         return articles.add(a);
     }
 
+    public double calculatePrice(Article article) {
+        return article.getBike().calculatePrice(article.getPurchaseAmount());
+    }
+
+    public double calculateTotalPrice() {
+        double totalPrice = 0;
+        for (Article article : articles) {
+            totalPrice += article.getBike().calculatePrice(article.getPurchaseAmount());
+        }
+        return totalPrice;
+    }
+
     public String getDetails() {
         double total = 0;
 
-        String result = "Details for \"" + customerName + "\"\n";
-        result += street + " " + streetNumber + "\n";
-        result += postalCode + " " + city + "\n";
-        result += "Geburtstag: " + birthday + "\n";
-        result += "Email: " + email + "\n\n";
-        result += "refactoring.Article: \n";
-        for (Article article : articles) {
-            double price = 0;
-            if (article.bike instanceof Brompton) {
-                if (article.purchaseAmount > 1) {
-                    price += (article.purchaseAmount - 1) * article.bike.price / 2;
-                }
-                price += article.bike.price * article.purchaseAmount;
-            } else if (article.bike instanceof EBike) {
-                price += article.bike.price * article.purchaseAmount;
-            } else if (article.bike instanceof Mountainbike) {
-                if (article.purchaseAmount > 2) {
-                    price += article.purchaseAmount * article.bike.price * 9 / 10;
-                } else {
-                    price += article.bike.price * article.purchaseAmount;
-                }
-            }
-            if (price > 1000f || price == 1000.0) {
-                price = price * 0.8;
-            }
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        StringBuilder sb = new StringBuilder();
 
-            result +=
-                    "\t"
-                            + article.bike.productName
-                            + "\tx\t"
-                            + article.purchaseAmount
-                            + "\t=\t"
-                            + String.valueOf(price)
-                            + "\n";
+        sb.append("Details for \"").append(customerName).append("\"\n");
+        sb.append(street).append(" ").append(streetNumber).append("\n");
+        sb.append(postalCode).append(" ").append(city).append("\n");
+        sb.append("Geburtstag: ").append(formatter.format(birthday)).append("\n");
+        sb.append("Email: ").append(email).append("\n\n");
+        sb.append("refactoring.Article: \n");
+
+        for (Article article : articles) {
+            double price = calculatePrice(article);
+            sb.append("\t")
+                .append(article.getBike().getProductName())
+                .append("\tx\t")
+                .append(article.getPurchaseAmount())
+                .append("\t=\t")
+                .append(price)
+                .append("\n");
             total += price;
         }
 
-        result += "\nTotal price:\t" + String.valueOf(total) + "\n";
+        sb.append("\nTotal price:\t").append(calculateTotalPrice()).append("\n");
 
-        return result;
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+    public SimpleDateFormat getBirthday() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        sdf.format(birthday);
+        return sdf;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getStreet() {
+        return street;
+    }
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+    public int getPostalCode() {
+        return postalCode;
+    }
+    public String getCity() {
+        return city;
+    }
+    public ArrayList<Article> getArticles() {
+        return articles;
     }
 }
