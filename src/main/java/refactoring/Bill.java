@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Bill {
 
+
     private final String customerName;
     private final String nickname;
     private final String street;
@@ -16,6 +17,18 @@ public class Bill {
     private final String email;
     private final ArrayList<Article> articles;
 
+    /**
+     * Erzeugt eine neue Rechnung für einen Kunden.
+     *
+     * @param name Kundenname
+     * @param nickname Kunden-Spitzname
+     * @param street Straße der Adresse
+     * @param streetNumber Hausnummer der Adresse
+     * @param postalCode Postleitzahl
+     * @param birthday Geburtstag des Kunden
+     * @param email E-Mail-Adresse des Kunden
+     * @param city Stadt der Adresse
+     */
 
     public Bill(String name, String nickname, String street, String streetNumber, int postalCode, Date birthday, String email, String city) {
         this.customerName = name;
@@ -29,14 +42,31 @@ public class Bill {
         articles = new ArrayList<>();
     }
 
+    /**
+     * Fügt einen Artikel zur Rechnung hinzu.
+     *
+     * @param a Der hinzuzufügende Artikel
+     * @return true, wenn der Artikel erfolgreich hinzugefügt wurde
+     */
     public boolean addArticle(Article a) {
         return articles.add(a);
     }
 
+    /**
+     * Berechnet den Preis eines einzelnen Artikels in der Rechnung.
+     *
+     * @param article Der Artikel, dessen Preis berechnet werden soll
+     * @return Der berechnete Preis
+     */
     public double calculatePrice(Article article) {
         return article.getBike().calculatePrice(article.getPurchaseAmount());
     }
 
+    /**
+     * Berechnet den Gesamtpreis aller Artikel in der Rechnung.
+     *
+     * @return Die Summe der Preise aller Artikel
+     */
     public double calculateTotalPrice() {
         double totalPrice = 0;
         for (Article article : articles) {
@@ -45,6 +75,11 @@ public class Bill {
         return totalPrice;
     }
 
+    /**
+     * Gibt die Details der Rechnung als formatierter String zurück.
+     *
+     * @return Eine lesbare Rechnungsausgabe
+     */
     public String getDetails() {
         double total = 0;
 

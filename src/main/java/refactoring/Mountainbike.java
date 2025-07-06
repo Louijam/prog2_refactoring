@@ -6,6 +6,13 @@ public class Mountainbike extends Bike {
         super(productName, price, maxSpeed, rearGearCount, frontGearCount);
     }
 
+    /**
+     * Berechnet den Gesamtpreis für eine bestimmte Menge der Bikes.
+     *
+     * @param amount Die Anzahl der Bikes, die gekauft werden sollen. Muss größer 0 sein.
+     * @return Der Gesamtpreis nach Berücksichtigung von Rabatten.
+     *
+     */
     @Override
     public double calculatePrice(int amount){
         double total=0;
